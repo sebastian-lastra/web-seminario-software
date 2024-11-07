@@ -1,0 +1,21 @@
+<html>
+	<head>
+		<title>Modificar producto</title>
+		<script type="text/javascript" src="/front/js/jquery/jquery-1.12.1.min.js"></script>
+		<script type="text/javascript" src="/front/js/productos/modificar.js"></script>
+	</head>
+	<body>
+		<h1>Modificar producto</h1>
+		<h5><a href="productos.html">Volver</a></h5>
+		<table border="1">
+			<tr><td>C&oacute;digo:</td><td><input type="text" id="productoCodigo" /></td></tr>
+			<tr><td>Nombre:</td><td><input type="text" id="productoNombre" /></td></tr>
+			<tr><td>Descripci&oacute;n:</td><td><textarea rows="5" id="productoDescripcion"></textarea></td></tr>
+		</table>
+		<input type="hidden" id="_id" />
+		<input type="button" id="modificar-producto" value="Guardar" />
+		<span id="mensaje-resultado"></span>
+		<br />
+		<a href="javascript:history.go(0);">Refrescar</a>
+	</body>
+</html>
