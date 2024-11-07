@@ -1,6 +1,5 @@
-alert("XD")
 function EliminarProducto(id){
-				
+
     $.ajax({
 
         url: 'http://localhost:3000/api/producto/' + id,
@@ -32,7 +31,7 @@ function Refrescar() {
         $('#listado-productos').html('');
         
         $('#listado-productos').append('<tr><td>C&oacute;digo</td><td>Nombre</td><td>Descripci&oacute;n</td><td>Acciones</td></tr>');
-    
+
         $.ajax({
             
             url: 'http://localhost:3000/api/producto',
@@ -40,7 +39,7 @@ function Refrescar() {
             type: 'GET',
             
             error: function (xhr, ajaxOptions, thrownError) {
-            
+                
                 alert(xhr.status);
                 
                 alert(thrownError);
@@ -72,8 +71,10 @@ function Refrescar() {
     
     }
 
+
 $(function(){
 
     Refrescar();
 
 });
+
