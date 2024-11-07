@@ -2,6 +2,8 @@
 var express    = require('express');
 var bodyParser = require('body-parser');
 var path       = require('path');
+const nunjucks = require('nunjucks')
+
 
 
 //========== Inicializacion de webapp
@@ -13,6 +15,13 @@ var port = process.env.PORT || 80;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+nunjucks.configure('views', {
+	autoescape: true,
+	express: app
+})
+  
+app.set('view engine', 'html')
+
 
 //========= Configurar static folder front elements
 app.use("/front", express.static(__dirname + '/src'));
@@ -20,10 +29,10 @@ app.use("/front", express.static(__dirname + '/src'));
 
 //========= Implementacion de llamado de acciones en duro
 app.get('/'                      , function(req, res) { res.redirect("/productos.html")                                   ; });
-app.get('/productos.html'        , function(req, res) { res.sendFile(path.resolve('app/views/productos/index.html'))      ; });
-app.get('/agregarProducto.html'  , function(req, res) { res.sendFile(path.resolve('app/views/productos/agregar.html'))    ; });
-app.get('/modificarProducto.html', function(req, res) { res.sendFile(path.resolve('app/views/productos/modificar.html'))  ; });
-app.get('/jquery-1.12.1.min.js'  , function(req, res) { res.sendFile(path.resolve('src/js/jquery/jquery-1.12.1.min.js'))  ; });
+app.get('/productos.html'        , function(req, res) { res.render('productos/index.html') });
+app.get('/agregarProducto.html'  , function(req, res) { res.render('productos/agregar.html')   ; });
+app.get('/modificarProducto.html', function(req, res) { res.render('productos/modificar.html')  ; });
+app.get('/jquery-1.12.1.min.js'  , function(req, res) { res.sendFile('src/js/jquery/jquery-1.12.1.min.js')  ; });
 
 
 app.get('/sucursales.html'        , function(req, res) { res.sendFile(path.resolve('app/views/sucursales/index.html'))      ; });
