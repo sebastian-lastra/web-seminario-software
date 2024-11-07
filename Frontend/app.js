@@ -26,6 +26,10 @@ app.get('/modificarProducto.html', function(req, res) { res.sendFile(path.resolv
 app.get('/jquery-1.12.1.min.js'  , function(req, res) { res.sendFile(path.resolve('src/js/jquery/jquery-1.12.1.min.js'))  ; });
 
 
+app.get('/sucursales.html'        , function(req, res) { res.sendFile(path.resolve('app/views/sucursales/index.html'))      ; });
+app.get('/agregarSucursal.html'  , function(req, res) { res.sendFile(path.resolve('app/views/sucursales/agregar.html'))    ; });
+app.get('/modificarSucursal.html', function(req, res) { res.sendFile(path.resolve('app/views/sucursales/modificar.html'))  ; });
+
 //======== Ejecucion de webapps
 app.listen(port, function(){
 	console.log('Running on PORT: ' + port);
