@@ -2,7 +2,7 @@
 	<head>
 		<title>Agregar sucursal</title>
 		<script type="text/javascript" src="/front/js/jquery/jquery-1.12.1.min.js"></script>
-		<script type="text/javascript" src="/front/js/sucursal/agregar.js"></script>
+		<script type="text/javascript" src="/front/js/sucursals/agregar.js"></script>
 	</head>
 	<body>
 		<h1>Nueva sucursal</h1>
@@ -10,20 +10,20 @@
 
 		<table border="1">
 			<tr>
-				<td>C&oacute;digo:</td>
-				<td><input type="text" id="sucursalCodigo"/></td>
+				<td>Id:</td>
+				<td><input type="text" id="sucursalId"/></td>
 			</tr>
 			<tr>
 				<td>Nombre:</td><td><input type="text" id="sucursalNombre" ></td>
 			</tr>
 			<tr>
-				<td>Descripci&oacute;n:</td><td><textarea rows="5" id="sucursalDescripcion"></textarea></td>
+				<td>Direcci&oacute;n:</td><td><textarea rows="5" id="sucursalDireccion"></textarea></td>
 			</tr>
 		</table>
 
 		<input type="button" id="agregar-sucursal" value="Guardar" />
 		<span id="mensaje-resultado"></span>
-		<br />
+		<br>
 		<a href="javascript:history.go(0);">Refrescar</a>
 	</body>
 </html>

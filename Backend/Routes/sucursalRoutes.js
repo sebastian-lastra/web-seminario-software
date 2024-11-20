@@ -1,126 +1,51 @@
 var express = require('express');
- 
-var routes = function(Sucursal){
-	 
-	var sucursalRouter = express.Router();
-	
-	var sucursalController = require('../controllers/sucursalController')(Sucursal);
 
-	sucursalRouter.route('/')
-		.post(sucursalController.post)
-		.get(sucursalController.get);
+var routes = function(Sucursal) {
+    var sucursalRouter = express.Router();
 
+    var sucursalController = require('../controllers/sucursalController')(Sucursal);
 
-	sucursalRouter.use('/:sucursalId', async function(req, res, next){
-		
-		var sucursalToFind = new sucursal();
+    sucursalRouter.route('/')
+        .post(sucursalController.post)
+        .get(sucursalController.get);
 
-		sucursalToFind._id = req.params.sucursalId;
+    sucursalRouter.use('/:sucursalId', async function(req, res, next) {
+        try {
+            var sucursal = await Sucursal.findById(req.params.sucursalId);
+            if (sucursal) {
+                req.sucursal = sucursal;
+                next();
+            } else {
+                res.status(404).send('Sucursal no encontrada');
+            }
+        } catch (err) {
+            res.status(500).send('Error al buscar sucursal: ' + err.message);
+        }
+    });
 
-		var sucursal = await sucursal.findOne(sucursalToFind);
-		
-		if (sucursal) {
-				
-			req.sucursal = sucursal;
-			
-			next();
-			
-		}
-		else {
-			
-			res.status(404).send('no sucursal found');
-			
-		}
-		
-	});
-	
-	sucursalRouter.route('/:sucursalId')
-		.get(function(req, res){
-			
-			var returnSucursal = req.sucursal.toJSON();
-			
-			res.json(returnSucursal );
-			
-		})
-		.put(async function(req, res){
-			
-			req.sucursal._id = req.body._id;
+    sucursalRouter.route('/:sucursalId')
+        .get(function(req, res) {
+            res.json(req.sucursal);
+        })
+        .put(async function(req, res) {
+            try {
+                Object.assign(req.sucursal, req.body);
+                await req.sucursal.save();
+                res.status(200).send('Sucursal actualizada');
+            } catch (err) {
+                res.status(400).send('Error al actualizar sucursal: ' + err.message);
+            }
+        })
+        .delete(async function(req, res) {
+            try {
+                await req.sucursal.remove();
+                res.status(200).send('Sucursal eliminada');
+            } catch (err) {
+                res.status(500).send('Error al eliminar sucursal: ' + err.message);
+            }
+        });
 
-			req.sucursal.sucursalCodigo = req.body.sucursalCodigo;
-					
-			req.sucursal.sucursalNombre = req.body.sucursalNombre;
-			
-			req.sucursal.sucursalDescripcion = req.body.sucursalDescripcion;
+    return sucursalRouter;
+};
 
-			var sucursalToFind = new sucursal();
-
-			sucursalToFind._id = req.sucursal._id;
-
-			var result = await Sucursal.updateOne(sucursalToFind, req.sucursal);
-			
-			if (!result.acknowledged) {
-			
-				res.status(500).send('sucursal no modificado');
-			
-			}
-			else {
-			
-				res.status(200).send('sucursal modificado');
-		
-			}
-			
-		})
-		.patch(async function(req, res){
-
-			var sucursalToFind = new Sucursal();
-
-			sucursalToFind._id = req.body._id;
-
-			if (req.body._id) {
-				
-				delete req.body._id;
-				
-			}
-
-			var result = await Sucursal.findOneAndUpdate(sucursalToFind, req.body, {
-				includeResultMetadata: true
-			});
-
-			if (result.ok === 0) {
-			
-				res.status(500).send('sucursal no modificado');
-			
-			}
-			else {
-			
-				res.json(req.body);
-		
-			}
-			
-		})
-		.delete(async function(req, res){
-			
-			var sucursalToFind = new Sucursal();
-
-			sucursalToFind._id = req.Sucursal._id;
-
-			var result = await Sucursal.deleteOne(sucursalToFind);
-			
-			if (!result.acknowledged) {
-			
-				res.status(500).send('sucursal no eliminado');
-			
-			}
-			else {
-			
-				res.status(200).send('sucursal eliminado');
-		
-			}
-			
-		});
-			
-		 return sucursalRouter;
-	 
- };
- 
- module.exports = routes;
+module.exports = routes;
